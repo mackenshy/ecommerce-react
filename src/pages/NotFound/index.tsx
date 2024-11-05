@@ -1,14 +1,12 @@
-import './App.css'
-
-function App() {
+function NotFound() {
 
   return (
     <>
       <div className="bg-red-100">
-       Hola mundo
+       Not Found
       </div>
     </>
   )
 }
 
-export default App
+export default NotFound
