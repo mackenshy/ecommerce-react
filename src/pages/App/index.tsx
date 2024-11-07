@@ -8,7 +8,7 @@ import MyOrder from '../MyOrder'
 import SignIn from '../SignIn'
 import Layout from '../../components/Layout'
 import Navbar from '../../components/Navbar'
-import { ShoppingCartProvider } from '../../context'
+import { ShoppingCartProvider } from '../../contexts'
 
 const AppRoutes = () => {
 	const routes = useRoutes([

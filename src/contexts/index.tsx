@@ -1,11 +1,5 @@
-import { createContext, ReactNode, useState } from 'react'
-
-export type ShoppingCart = {
-  count: number;
-  setCount: (value: number) => void;
-}; 
-
-export const ShoppingCartContext = createContext<ShoppingCart>({} as ShoppingCart)
+import { ReactNode, useState } from 'react'
+import { ShoppingCartContext } from './ShoppingCartContext'
 
 export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
 	const [count, setCount] = useState(0)
