@@ -1,15 +1,55 @@
 import { useContext } from 'react'
 import { Product } from '../../pages/Home'
 import { ShoppingCartContext } from '../../contexts/ShoppingCartContext'
-import { PlusIcon } from '../../assets/icons'
+import { DoneIcon, PlusIcon } from '../../assets/icons'
 import { normalizeImagePath } from '../../utils/normalizeImagePath'
 
 const Card = ({ product }: { product: Product }) => {
-	const { count, setCount, openProductDetail, setProductToShow } = useContext(ShoppingCartContext)
+	const {
+		count,
+		setCount,
+		openProductDetail,
+		closeProductDetail,
+		setProductToShow,
+		openCheckoutSideMenu,
+		closeCheckoutSideMenu,
+		addProductToCart,
+		cartProducts
+	} = useContext(ShoppingCartContext)
 
-	const showProduct = () => {
+	const showProduct = (event: React.MouseEvent<HTMLElement>) => {
+		event.stopPropagation()
 		setProductToShow(product)
+		closeCheckoutSideMenu()
 		openProductDetail()
+	}
+
+	const addProductToShoppingCart = (event: React.MouseEvent<HTMLElement>) => {
+		event.stopPropagation()
+		setCount(count + 1)
+		addProductToCart(product)
+		closeProductDetail()
+		openCheckoutSideMenu()
+	}
+
+	const renderIcon = () => {
+		const isInChart = cartProducts.filter(productInCart => productInCart.id === product.id).length > 0
+		if (isInChart) {
+			return (
+				<div className="absolute top-0 right-0 flex justify-center items-center m-2">
+					<DoneIcon className="h-6 w-6 text-white" />
+				</div>
+			)
+		}
+
+		return (
+			<button
+				className="absolute top-0 right-0 flex justify-center items-center m-2"
+				onClick={addProductToShoppingCart}
+			>
+				<PlusIcon className="h-6 w-6 text-white" />
+			</button>
+		)
 	}
 
 	return (
@@ -26,12 +66,7 @@ const Card = ({ product }: { product: Product }) => {
 					alt={product.title}
 					className="w-full h-full object-cover rounded-lg"
 				/>
-				<button
-					className="absolute top-0 right-0 flex justify-center items-center m-2"
-					onClick={() => setCount(count + 1)}
-				>
-					<PlusIcon className="h-6 w-6 text-black" />
-				</button>
+				{renderIcon()}
 			</figure>
 			<p className="flex justify-between">
 				<span className="text-sm font-light">{product.title}</span>

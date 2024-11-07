@@ -14,6 +14,16 @@ export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
 	// Product Detail - Show product
 	const [productToShow, setProductToShow] = useState<Product>()
 
+
+	// Checkout Side Menu - Open/Close
+	const [isCheckoutSideMenuOpen, setIsCheckoutSideMenu] = useState(false)
+	const openCheckoutSideMenu = () => setIsCheckoutSideMenu(true)
+	const closeCheckoutSideMenu = () => setIsCheckoutSideMenu(false)
+
+	// Shopping Cart · Add products to cart
+  const [cartProducts, setCartProducts] = useState<Product[]>([])
+	const addProductToCart = (product: Product) => setCartProducts([...cartProducts, product])
+
 	return (
 		<ShoppingCartContext.Provider
 			value={{
@@ -23,7 +33,12 @@ export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
 				openProductDetail,
 				closeProductDetail,
 				productToShow,
-				setProductToShow
+				setProductToShow,
+				isCheckoutSideMenuOpen,
+				openCheckoutSideMenu,
+				closeCheckoutSideMenu,
+				cartProducts,
+				addProductToCart
 			}}
 		>
 			{children}

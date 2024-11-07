@@ -9,6 +9,11 @@ export type ShoppingCart = {
 	closeProductDetail: () => void
 	productToShow?: Product
 	setProductToShow: (product: Product) => void
+	isCheckoutSideMenuOpen: boolean
+	openCheckoutSideMenu: () => void
+	closeCheckoutSideMenu: () => void
+	cartProducts: Product[]
+	addProductToCart: (product: Product) => void
 }
 
 export const ShoppingCartContext = createContext<ShoppingCart>(
