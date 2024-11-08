@@ -23,6 +23,10 @@ export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
 	// Shopping Cart · Add products to cart
   const [cartProducts, setCartProducts] = useState<Product[]>([])
 	const addProductToCart = (product: Product) => setCartProducts([...cartProducts, product])
+	const deleteCartProduct = (id: number) => {
+		const filteredProducts = cartProducts.filter(product => product.id !== id)
+		setCartProducts(filteredProducts)
+	}
 
 	return (
 		<ShoppingCartContext.Provider
@@ -38,7 +42,8 @@ export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
 				openCheckoutSideMenu,
 				closeCheckoutSideMenu,
 				cartProducts,
-				addProductToCart
+				addProductToCart,
+				deleteCartProduct
 			}}
 		>
 			{children}

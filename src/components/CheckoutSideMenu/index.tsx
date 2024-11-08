@@ -1,12 +1,13 @@
+import './styles.css'
 import { useContext } from 'react'
 import { CloseIcon } from '../../assets/icons'
-import './styles.css'
 import { ShoppingCartContext } from '../../contexts/ShoppingCartContext'
 import OrderCart from '../OrderCart'
 import { Product } from '../../pages/Home'
+import { totalPrice } from '../../utils/cart'
 
 const CheckoutSideMenu = () => {
-	const { isCheckoutSideMenuOpen, closeCheckoutSideMenu, cartProducts } =
+	const { isCheckoutSideMenuOpen, closeCheckoutSideMenu, cartProducts, deleteCartProduct } =
 		useContext(ShoppingCartContext)
 
 	return (
@@ -26,11 +27,19 @@ const CheckoutSideMenu = () => {
 				{cartProducts?.map((product: Product) => (
 					<OrderCart
 						key={product.id}
+						id={product.id}
 						title={product.title}
 						imageUrl={product.images[0]}
 						price={product.price}
+						handleDelete={deleteCartProduct}
 					/>
 				))}
+			</div>
+			<div className='px-6'>
+				<p className='flex justify-between items-center'>
+					<span className='font-light text-xl'>Total</span>
+					<span className='font-medium text-2xl'>${totalPrice(cartProducts)}</span>
+				</p>
 			</div>
 		</aside>
 	)

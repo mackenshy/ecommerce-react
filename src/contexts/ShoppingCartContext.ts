@@ -14,6 +14,7 @@ export type ShoppingCart = {
 	closeCheckoutSideMenu: () => void
 	cartProducts: Product[]
 	addProductToCart: (product: Product) => void
+	deleteCartProduct: (id: number) => void
 }
 
 export const ShoppingCartContext = createContext<ShoppingCart>(
