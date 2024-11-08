@@ -6,13 +6,13 @@ const OrderCart = ({
 	title,
 	imageUrl,
 	price,
-	handleDelete
+	handleDelete,
 }: {
-	id: number,
+	id: number
 	title: string
 	imageUrl?: string
-	price: number,
-	handleDelete: (id: number) => void
+	price: number
+	handleDelete?: (id: number) => void
 }) => {
 	return (
 		<div className="flex justify-between items-center mb-2">
@@ -28,7 +28,12 @@ const OrderCart = ({
 			</div>
 			<div>
 				<p className="text-lg font-medium">${price}</p>
-				<CloseIcon className="h-6 w-6 text-black cursor-pointer" onClick={() => handleDelete(id)} />
+				{handleDelete && (
+					<CloseIcon
+						className="h-6 w-6 text-black cursor-pointer"
+						onClick={() => handleDelete(id)}
+					/>
+				)}
 			</div>
 		</div>
 	)

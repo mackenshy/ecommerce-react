@@ -5,6 +5,7 @@ import { ShoppingCartContext } from '../../contexts/ShoppingCartContext'
 import OrderCart from '../OrderCart'
 import { totalPrice } from '../../utils/cart'
 import { Product } from '../../types'
+import { Link } from 'react-router-dom'
 
 const CheckoutSideMenu = () => {
 	const {
@@ -27,6 +28,7 @@ const CheckoutSideMenu = () => {
 
 		setOrder([...order, orderToAdd])
 		clearCartProducts()
+		closeCheckoutSideMenu()
 	}
 
 	return (
@@ -61,12 +63,16 @@ const CheckoutSideMenu = () => {
 						${totalPrice(cartProducts)}
 					</span>
 				</p>
-				<button
-					className={`${!cartProducts.length ? 'hidden' : 'block'} w-full bg-black py-3 text-white rounded-lg mt-2`}
-					onClick={() => handleCheckout()}
-				>
-					Checkout
-				</button>
+				<Link to='my-orders/last'>
+					<button
+						className={`${
+							!cartProducts.length ? 'hidden' : 'block'
+						} w-full bg-black py-3 text-white rounded-lg mt-2`}
+						onClick={() => handleCheckout()}
+					>
+						Checkout
+					</button>
+				</Link>
 			</div>
 		</aside>
 	)
