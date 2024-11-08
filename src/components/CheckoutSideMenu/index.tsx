@@ -3,12 +3,31 @@ import { useContext } from 'react'
 import { CloseIcon } from '../../assets/icons'
 import { ShoppingCartContext } from '../../contexts/ShoppingCartContext'
 import OrderCart from '../OrderCart'
-import { Product } from '../../pages/Home'
 import { totalPrice } from '../../utils/cart'
+import { Product } from '../../types'
 
 const CheckoutSideMenu = () => {
-	const { isCheckoutSideMenuOpen, closeCheckoutSideMenu, cartProducts, deleteCartProduct } =
-		useContext(ShoppingCartContext)
+	const {
+		isCheckoutSideMenuOpen,
+		closeCheckoutSideMenu,
+		cartProducts,
+		deleteCartProduct,
+		clearCartProducts,
+		order,
+		setOrder,
+	} = useContext(ShoppingCartContext)
+
+	const handleCheckout = () => {
+		const orderToAdd = {
+			date: '2024.11.01',
+			products: cartProducts,
+			quantityProducts: cartProducts.length,
+			totalPrice: totalPrice(cartProducts),
+		}
+
+		setOrder([...order, orderToAdd])
+		clearCartProducts()
+	}
 
 	return (
 		<aside
@@ -23,7 +42,7 @@ const CheckoutSideMenu = () => {
 					onClick={closeCheckoutSideMenu}
 				/>
 			</div>
-			<div className='px-6 overflow-y-scroll'>
+			<div className="px-6 overflow-y-scroll flex-1">
 				{cartProducts?.map((product: Product) => (
 					<OrderCart
 						key={product.id}
@@ -35,11 +54,19 @@ const CheckoutSideMenu = () => {
 					/>
 				))}
 			</div>
-			<div className='px-6'>
-				<p className='flex justify-between items-center'>
-					<span className='font-light text-xl'>Total</span>
-					<span className='font-medium text-2xl'>${totalPrice(cartProducts)}</span>
+			<div className="px-6 mb-6">
+				<p className="flex justify-between items-center">
+					<span className="font-light text-xl">Total</span>
+					<span className="font-medium text-2xl">
+						${totalPrice(cartProducts)}
+					</span>
 				</p>
+				<button
+					className={`${!cartProducts.length ? 'hidden' : 'block'} w-full bg-black py-3 text-white rounded-lg mt-2`}
+					onClick={() => handleCheckout()}
+				>
+					Checkout
+				</button>
 			</div>
 		</aside>
 	)

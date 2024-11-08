@@ -1,5 +1,5 @@
 import { createContext } from 'react'
-import { Product } from '../pages/Home'
+import { Order, Product } from '../types'
 
 export type ShoppingCart = {
 	count: number
@@ -15,6 +15,9 @@ export type ShoppingCart = {
 	cartProducts: Product[]
 	addProductToCart: (product: Product) => void
 	deleteCartProduct: (id: number) => void
+	clearCartProducts: () => void
+	order: Order[]
+	setOrder: (order: Order[]) => void
 }
 
 export const ShoppingCartContext = createContext<ShoppingCart>(

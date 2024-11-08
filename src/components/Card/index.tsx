@@ -1,8 +1,8 @@
 import { useContext } from 'react'
-import { Product } from '../../pages/Home'
 import { ShoppingCartContext } from '../../contexts/ShoppingCartContext'
 import { DoneIcon, PlusIcon } from '../../assets/icons'
 import { normalizeImagePath } from '../../utils/normalizeImagePath'
+import { Product } from '../../types'
 
 const Card = ({ product }: { product: Product }) => {
 	const {

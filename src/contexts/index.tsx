@@ -1,6 +1,6 @@
 import { ReactNode, useState } from 'react'
 import { ShoppingCartContext } from './ShoppingCartContext'
-import { Product } from '../pages/Home'
+import { Order, Product } from '../types'
 
 export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
 	// Shopping cart - Increment quantity
@@ -27,6 +27,10 @@ export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
 		const filteredProducts = cartProducts.filter(product => product.id !== id)
 		setCartProducts(filteredProducts)
 	}
+	const clearCartProducts = () => setCartProducts([])
+
+	// Shopping Cart - Order
+	const [order, setOrder] = useState<Order[]>([])
 
 	return (
 		<ShoppingCartContext.Provider
@@ -43,7 +47,10 @@ export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
 				closeCheckoutSideMenu,
 				cartProducts,
 				addProductToCart,
-				deleteCartProduct
+				deleteCartProduct,
+				clearCartProducts,
+				order,
+				setOrder,
 			}}
 		>
 			{children}

@@ -1,21 +1,7 @@
 import { useEffect, useState } from 'react'
 import Card from '../../components/Card'
 import ProductDetail from '../../components/ProductDetail'
-
-type ProductCategory = {
-	id: number
-	name: string
-	image: string
-}
-
-export type Product = {
-	id: number
-	title: string
-	price: number
-	description: string
-	category: ProductCategory
-	images: [string]
-}
+import { Product } from '../../types'
 
 function Home() {
 	const [products, setProducts] = useState<Product[]>()
