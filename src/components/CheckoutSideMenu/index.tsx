@@ -1,6 +1,7 @@
 import './styles.css'
 import { useContext } from 'react'
 import { CloseIcon } from '../../assets/icons'
+import {v4 as uuidv4} from 'uuid';
 import { ShoppingCartContext } from '../../contexts/ShoppingCartContext'
 import OrderCart from '../OrderCart'
 import { totalPrice } from '../../utils/cart'
@@ -20,7 +21,8 @@ const CheckoutSideMenu = () => {
 
 	const handleCheckout = () => {
 		const orderToAdd = {
-			date: '2024.11.01',
+			id: uuidv4(),
+			date: (new Date()).toLocaleDateString(),
 			products: cartProducts,
 			quantityProducts: cartProducts.length,
 			totalPrice: totalPrice(cartProducts),
