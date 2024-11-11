@@ -10,6 +10,7 @@ import Layout from '../../components/Layout'
 import Navbar from '../../components/Navbar'
 import { ShoppingCartProvider } from '../../contexts'
 import CheckoutSideMenu from '../../components/CheckoutSideMenu'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 const AppRoutes = () => {
 	const routes = useRoutes([
@@ -42,17 +43,21 @@ const AppRoutes = () => {
 	return routes
 }
 
+const queryClient = new QueryClient()
+
 function App() {
 	return (
-		<ShoppingCartProvider>
-			<Layout>
-				<BrowserRouter>
-					<AppRoutes />
-					<Navbar />
-					<CheckoutSideMenu />
-				</BrowserRouter>
-			</Layout>
-		</ShoppingCartProvider>
+		<QueryClientProvider client={queryClient}>
+			<ShoppingCartProvider>
+				<Layout>
+					<BrowserRouter>
+						<AppRoutes />
+						<Navbar />
+						<CheckoutSideMenu />
+					</BrowserRouter>
+				</Layout>
+			</ShoppingCartProvider>
+		</QueryClientProvider>
 	)
 }
 

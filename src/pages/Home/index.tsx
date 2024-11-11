@@ -4,7 +4,7 @@ import ProductDetail from '../../components/ProductDetail'
 import { ShoppingCartContext } from '../../contexts/ShoppingCartContext'
 
 function Home() {
-	const { filteredProducts, searchByValue, setSearchByValue } = useContext(ShoppingCartContext)
+	const { isLoading, filteredProducts, searchByValue, setSearchByValue } = useContext(ShoppingCartContext)
 
 	return (
 		<>
@@ -18,11 +18,15 @@ function Home() {
 				onChange={(e) => setSearchByValue(e.target.value)}
 				value={searchByValue}
 			/>
-			<div className="grid gap-4 grid-cols-4 w-full max-w-screen-lg">
-				{filteredProducts?.length ? filteredProducts?.map((product) => (
+			{filteredProducts.length > 0 && <div className="grid gap-4 grid-cols-4 w-full max-w-screen-lg">
+				{filteredProducts?.map((product) => (
 					<Card key={product.id} product={product} />
-				)) : "We don't have anything"}
-			</div>
+				))}
+			</div>}
+			{(filteredProducts.length === 0 && searchByValue) && <p>We don't have anything</p>}
+			
+			{isLoading && <p>Loading...</p>}
+			
 			<ProductDetail />
 		</>
 	)

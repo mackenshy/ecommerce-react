@@ -1,4 +1,5 @@
 import { ReactNode, useEffect, useState } from 'react'
+import { useQuery } from 'react-query'
 import { ShoppingCartContext } from './ShoppingCartContext'
 import { Order, Product } from '../types'
 
@@ -32,35 +33,35 @@ export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
 	// Shopping Cart - Order
 	const [order, setOrder] = useState<Order[]>([])
 
-	// Get Products
-	const [products, setProducts] = useState<Product[]>()
-
 	// Get Products by Title
-	const [searchByValue, setSearchByValue] = useState("")
+	const [searchByValue, setSearchByValue] = useState('')
 	const [filteredProducts, setFilteredProducts] = useState<
-		Product[] | undefined
+		Product[]
 	>([])
 
-	useEffect(() => {
-		fetch(`https://api.escuelajs.co/api/v1/products`)
-			.then((resp) => resp.json())
-			.then((data) => setProducts(data))
-			.catch((error) => console.error(error))
-	}, [])
+	const { isLoading, error, data: products } = useQuery<Product[], Error>({
+		queryKey: ['products'],
+		queryFn: () =>
+			fetch(`https://api.escuelajs.co/api/v1/products`)
+				.then(resp => resp.json())
+				.catch(error => { throw new Error(error) })
+	})
 
 	const filterProductsByTitle = (
 		searchByTitle: string,
 		productstoFilter?: Product[]
 	) => {
+		if(!productstoFilter) return []
+
 		return productstoFilter?.filter((productToFilter) =>
 			productToFilter.title.toLowerCase().includes(searchByTitle.toLowerCase())
 		)
 	}
 
 	useEffect(() => {
-		if(!searchByValue) {
-			setFilteredProducts(products)
-			return;
+		if (!searchByValue) {
+			setFilteredProducts(products || [])
+			return
 		}
 
 		setFilteredProducts(filterProductsByTitle(searchByValue, products))
@@ -86,9 +87,11 @@ export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
 				order,
 				setOrder,
 				products,
+				isLoading,
+				error,
 				searchByValue,
 				setSearchByValue,
-				filteredProducts
+				filteredProducts,
 			}}
 		>
 			{children}

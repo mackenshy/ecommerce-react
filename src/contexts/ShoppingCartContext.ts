@@ -19,9 +19,11 @@ export type ShoppingCart = {
 	order: Order[]
 	setOrder: (order: Order[]) => void
 	products?: Product[]
+	isLoading: boolean
+	error: Error | null
 	searchByValue?: string
 	setSearchByValue: (value: string) => void
-	filteredProducts?: Product[]
+	filteredProducts: Product[]
 }
 
 export const ShoppingCartContext = createContext<ShoppingCart>(
