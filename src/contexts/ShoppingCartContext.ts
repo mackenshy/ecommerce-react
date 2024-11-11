@@ -18,6 +18,10 @@ export type ShoppingCart = {
 	clearCartProducts: () => void
 	order: Order[]
 	setOrder: (order: Order[]) => void
+	products?: Product[]
+	searchByValue?: string
+	setSearchByValue: (value: string) => void
+	filteredProducts?: Product[]
 }
 
 export const ShoppingCartContext = createContext<ShoppingCart>(
