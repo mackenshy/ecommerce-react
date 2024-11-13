@@ -2,6 +2,13 @@ import { ReactNode, useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { ShoppingCartContext } from './ShoppingCartContext'
 import { Order, Product } from '../types'
+import { filterProductsByCategory, filterProductsByTitle, filterProductsByTitleAndCategory } from '../utils/filterProducts'
+
+enum FilterType {
+	BY_TITLE,
+	BY_CATEGORY,
+	BY_TITLE_AND_CATEGORY
+}
 
 export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
 	// Product Detail - Open/Close
@@ -51,51 +58,16 @@ export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
 				}),
 	})
 
-	const filterProductsByTitle = () => {
-		if (!products) return []
-		if (!searchByTitle) {
-			return products
-		}
-
-		return products?.filter((product) =>
-			product.title.toLowerCase().includes(searchByTitle.toLowerCase())
-		)
-	}
-
-	const filterProductsByCategory = () => {
-		if (!products) return []
-		if (!searchByCategory) return products
-
-		return products?.filter((product) =>
-			product.category.name
-				.toLowerCase()
-				.includes(searchByCategory.toLowerCase())
-		)
-	}
-
-	const filterProductsByTitleAndCategory = () => {
-		if (!products) return []
-		if (!searchByCategory) return products
-
-		return products?.filter(
-			(product) =>
-				product.category.name
-					.toLowerCase()
-					.includes(searchByCategory.toLowerCase()) &&
-				product.title.toLowerCase().includes(searchByTitle.toLowerCase())
-		)
-	}
-
-	const filterBy = (searchBType?: string) => {
+	const filterBy = (searchBType?: FilterType) => {
 		switch (searchBType) {
-			case 'BY_TITLE':
-				setFilteredProducts(filterProductsByTitle())
+			case FilterType.BY_TITLE:
+				setFilteredProducts(filterProductsByTitle(products, searchByTitle))
 				break
-			case 'BY_CATEGORY':
-				setFilteredProducts(filterProductsByCategory())
+			case FilterType.BY_CATEGORY:
+				setFilteredProducts(filterProductsByCategory(products, searchByCategory))
 				break
-			case 'BY_TITLE_AND_CATEGORY':
-				setFilteredProducts(filterProductsByTitleAndCategory())
+			case FilterType.BY_TITLE_AND_CATEGORY:
+				setFilteredProducts(filterProductsByTitleAndCategory(products, searchByTitle, searchByCategory))
 				break
 			case undefined:
 				setFilteredProducts(products || [])
@@ -106,15 +78,9 @@ export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
 	}
 
 	useEffect(() => {
-		console.log(
-			'searchByTitle',
-			searchByTitle,
-			'searchByCategory',
-			searchByCategory
-		)
-		if (searchByTitle && searchByCategory) filterBy('BY_TITLE_AND_CATEGORY')
-		if (searchByTitle && !searchByCategory) filterBy('BY_TITLE')
-		if (!searchByTitle && searchByCategory) filterBy('BY_CATEGORY')
+		if (searchByTitle && searchByCategory) filterBy(FilterType.BY_TITLE_AND_CATEGORY)
+		if (searchByTitle && !searchByCategory) filterBy(FilterType.BY_TITLE)
+		if (!searchByTitle && searchByCategory) filterBy(FilterType.BY_CATEGORY)
 		if (!searchByTitle && !searchByCategory) filterBy()
 	}, [products, searchByTitle, searchByCategory])
 
