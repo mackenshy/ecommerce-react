@@ -1,4 +1,4 @@
-import { Product } from '../pages/Home'
+import { Product } from '../types'
 
 /**
  * This function calculate the total price of a product list
