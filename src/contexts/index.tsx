@@ -4,9 +4,6 @@ import { ShoppingCartContext } from './ShoppingCartContext'
 import { Order, Product } from '../types'
 
 export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
-	// Shopping cart - Increment quantity
-	const [count, setCount] = useState(0)
-
 	// Product Detail - Open/Close
 	const [isProductDetailOpen, setIsProductDetailOpen] = useState(false)
 	const openProductDetail = () => setIsProductDetailOpen(true)
@@ -124,8 +121,6 @@ export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
 	return (
 		<ShoppingCartContext.Provider
 			value={{
-				count,
-				setCount,
 				isProductDetailOpen,
 				openProductDetail,
 				closeProductDetail,

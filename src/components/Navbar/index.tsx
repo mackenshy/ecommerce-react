@@ -5,7 +5,7 @@ import { ShoppingCartContext } from '../../contexts/ShoppingCartContext'
 import { CartIcon } from '../../assets/icons'
 
 const Navbar = () => {
-	const { count, setSearchByCategory } = useContext(ShoppingCartContext)
+	const { cartProducts, setSearchByCategory } = useContext(ShoppingCartContext)
 	return (
 		<nav className="flex justify-between items-center fixed z-10 w-full py-5 px-8 text-sm top-0 font-light">
 			<ul className="flex items-center gap-3">
@@ -41,7 +41,7 @@ const Navbar = () => {
 				</li>
 				<li className="flex items-center gap-1">
 					<CartIcon className="h-6 w-6 fill-black" />
-					<span>{count}</span>
+					<span>{cartProducts?.length}</span>
 				</li>
 			</ul>
 		</nav>

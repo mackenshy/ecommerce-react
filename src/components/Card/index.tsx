@@ -6,8 +6,6 @@ import { Product } from '../../types'
 
 const Card = ({ product }: { product: Product }) => {
 	const {
-		count,
-		setCount,
 		openProductDetail,
 		closeProductDetail,
 		setProductToShow,
@@ -26,7 +24,6 @@ const Card = ({ product }: { product: Product }) => {
 
 	const addProductToShoppingCart = (event: React.MouseEvent<HTMLElement>) => {
 		event.stopPropagation()
-		setCount(count + 1)
 		addProductToCart(product)
 		closeProductDetail()
 		openCheckoutSideMenu()

@@ -2,8 +2,6 @@ import { createContext } from 'react'
 import { Order, Product } from '../types'
 
 export type ShoppingCart = {
-	count: number
-	setCount: (value: number) => void
 	isProductDetailOpen: boolean
 	openProductDetail: () => void
 	closeProductDetail: () => void
