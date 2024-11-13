@@ -34,38 +34,92 @@ export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
 	const [order, setOrder] = useState<Order[]>([])
 
 	// Get Products by Title
-	const [searchByValue, setSearchByValue] = useState('')
-	const [filteredProducts, setFilteredProducts] = useState<
-		Product[]
-	>([])
+	const [searchByTitle, setSearchByTitle] = useState('')
+	const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
 
-	const { isLoading, error, data: products } = useQuery<Product[], Error>({
+	// Get Products by Category
+	const [searchByCategory, setSearchByCategory] = useState('')
+
+	const {
+		isLoading,
+		error,
+		data: products,
+	} = useQuery<Product[], Error>({
 		queryKey: ['products'],
 		queryFn: () =>
 			fetch(`https://api.escuelajs.co/api/v1/products`)
-				.then(resp => resp.json())
-				.catch(error => { throw new Error(error) })
+				.then((resp) => resp.json())
+				.catch((error) => {
+					throw new Error(error)
+				}),
 	})
 
-	const filterProductsByTitle = (
-		searchByTitle: string,
-		productstoFilter?: Product[]
-	) => {
-		if(!productstoFilter) return []
+	const filterProductsByTitle = () => {
+		if (!products) return []
+		if (!searchByTitle) {
+			return products
+		}
 
-		return productstoFilter?.filter((productToFilter) =>
-			productToFilter.title.toLowerCase().includes(searchByTitle.toLowerCase())
+		return products?.filter((product) =>
+			product.title.toLowerCase().includes(searchByTitle.toLowerCase())
 		)
 	}
 
-	useEffect(() => {
-		if (!searchByValue) {
-			setFilteredProducts(products || [])
-			return
-		}
+	const filterProductsByCategory = () => {
+		if (!products) return []
+		if (!searchByCategory) return products
 
-		setFilteredProducts(filterProductsByTitle(searchByValue, products))
-	}, [products, searchByValue])
+		return products?.filter((product) =>
+			product.category.name
+				.toLowerCase()
+				.includes(searchByCategory.toLowerCase())
+		)
+	}
+
+	const filterProductsByTitleAndCategory = () => {
+		if (!products) return []
+		if (!searchByCategory) return products
+
+		return products?.filter(
+			(product) =>
+				product.category.name
+					.toLowerCase()
+					.includes(searchByCategory.toLowerCase()) &&
+				product.title.toLowerCase().includes(searchByTitle.toLowerCase())
+		)
+	}
+
+	const filterBy = (searchBType?: string) => {
+		switch (searchBType) {
+			case 'BY_TITLE':
+				setFilteredProducts(filterProductsByTitle())
+				break
+			case 'BY_CATEGORY':
+				setFilteredProducts(filterProductsByCategory())
+				break
+			case 'BY_TITLE_AND_CATEGORY':
+				setFilteredProducts(filterProductsByTitleAndCategory())
+				break
+			case undefined:
+				setFilteredProducts(products || [])
+				break
+			default:
+				break
+		}
+	}
+
+	useEffect(() => {
+		console.log(
+			'searchByTitle',
+			searchByTitle,
+			'searchByCategory',
+			searchByCategory
+		)
+		if (searchByTitle && searchByCategory) filterBy('BY_TITLE_AND_CATEGORY')
+		if (searchByTitle && !searchByCategory) filterBy('BY_TITLE')
+		if (!searchByTitle && searchByCategory) filterBy('BY_CATEGORY')
+		if (!searchByTitle && !searchByCategory) filterBy()
+	}, [products, searchByTitle, searchByCategory])
 
 	return (
 		<ShoppingCartContext.Provider
@@ -89,9 +143,10 @@ export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
 				products,
 				isLoading,
 				error,
-				searchByValue,
-				setSearchByValue,
+				searchByTitle,
+				setSearchByTitle,
 				filteredProducts,
+				setSearchByCategory,
 			}}
 		>
 			{children}

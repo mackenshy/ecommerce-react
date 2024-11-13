@@ -5,30 +5,30 @@ import { ShoppingCartContext } from '../../contexts/ShoppingCartContext'
 import { CartIcon } from '../../assets/icons'
 
 const Navbar = () => {
-	const { count } = useContext(ShoppingCartContext)
+	const { count, setSearchByCategory } = useContext(ShoppingCartContext)
 	return (
 		<nav className="flex justify-between items-center fixed z-10 w-full py-5 px-8 text-sm top-0 font-light">
 			<ul className="flex items-center gap-3">
 				<li className="font-semibold text-lg">
-					<NavLink to="/">Shopping</NavLink>
+					<NavLink to="/" onClick={() => setSearchByCategory("")}>Shopping</NavLink>
 				</li>
 				<li>
-					<NavbarItem to="/">All</NavbarItem>
+					<NavbarItem to="/" onClick={() => setSearchByCategory("")}>All</NavbarItem>
 				</li>
 				<li>
-					<NavbarItem to="/clothes">Clothes</NavbarItem>
+					<NavbarItem to="/clothes" onClick={() => setSearchByCategory("clothes")}>Clothes</NavbarItem>
 				</li>
 				<li>
-					<NavbarItem to="/electronics">Electronics</NavbarItem>
+					<NavbarItem to="/electronics" onClick={() => setSearchByCategory("electronics")}>Electronics</NavbarItem>
 				</li>
 				<li>
-					<NavbarItem to="/furnitures">Furnitures</NavbarItem>
+					<NavbarItem to="/furnitures" onClick={() => setSearchByCategory("furnitures")}>Furnitures</NavbarItem>
 				</li>
 				<li>
-					<NavbarItem to="/toys">Toys</NavbarItem>
+					<NavbarItem to="/toys" onClick={() => setSearchByCategory("toys")}>Toys</NavbarItem>
 				</li>
 				<li>
-					<NavbarItem to="/others">Others</NavbarItem>
+					<NavbarItem to="/others" onClick={() => setSearchByCategory("others")}>Others</NavbarItem>
 				</li>
 			</ul>
 			<ul className="flex items-center gap-3">
